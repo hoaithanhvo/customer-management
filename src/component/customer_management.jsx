@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import styles from "./customer_manager.module.scss"
 const CustomerForm = () => {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
@@ -20,7 +21,7 @@ const CustomerForm = () => {
         if (editCustomerIndex === null) {
             setCustomers([...customers, customer]);
             alert("Đã thêm thành công khách hàng");
-            etShowCustomers(false);
+            setShowCustomers(false);
         } else {
             const newCustomers = [...customers];
             newCustomers[editCustomerIndex] = customer;
@@ -58,13 +59,25 @@ const CustomerForm = () => {
         setEmail('');
         setEditCustomerIndex(null);
     };
-    const filteredCustomers = customers.filter(
-        (customer) => customer.phone.includes(searchTerm)
-    );
+    const filteredCustomers = customers.filter((customer) => {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+            customer.phone.includes(searchLower) ||
+            customer.name.toLowerCase().includes(searchLower)
+        );
+    });
+
 
 
     return (
         <div>
+            <input
+                type="text"
+                placeholder="Search by name or phone"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+            />
+
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="name">Name:</label>
@@ -91,22 +104,25 @@ const CustomerForm = () => {
             {customers.length > 0 && showCustomers && (
                 <div>
                     <h2>Customers:</h2>
-                    {customers.map((customer, index) => (
-                        <div key={index}>
-                            <h1>{index}</h1>
-                            <p>Name: {customer.name}</p>
-                            <p>Address: {customer.address}</p>
-                            <p>Phone: {customer.phone}</p>
-                            <p>Email: {customer.email}</p>
-                            <div>
-                                <button onClick={() => handleDelete(index)}>Delete</button>
-                                <button onClick={() => handleEdit(index)}>Edit</button>
+                    <div className={styles.list} >
+                        {filteredCustomers.map((customer, index) => (
+
+                            <div key={index}>
+                                <h1>{index}</h1>
+                                <p>Name: {customer.name}</p>
+                                <p>Address: {customer.address}</p>
+                                <p>Phone: {customer.phone}</p>
+                                <p>Email: {customer.email}</p>
+                                <div>
+                                    <button onClick={() => handleDelete(index)}>Delete</button>
+                                    <button onClick={() => handleEdit(index)}>Edit</button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             )}
-            <input onChange={filteredCustomers}></input>
+
 
         </div>
 
