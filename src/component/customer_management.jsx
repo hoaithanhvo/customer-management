@@ -52,13 +52,13 @@ const CustomerForm = () => {
         setEditCustomerIndex(index);
     };
 
-    const handleCancelEdit = () => {
-        setName('');
-        setAddress('');
-        setPhone('');
-        setEmail('');
-        setEditCustomerIndex(null);
-    };
+    // const handleCancelEdit = () => {
+    //     setName('');
+    //     setAddress('');
+    //     setPhone('');
+    //     setEmail('');
+    //     setEditCustomerIndex(null);
+    // };
     const filteredCustomers = customers.filter((customer) => {
         const searchLower = searchTerm.toLowerCase();
         return (
@@ -78,7 +78,7 @@ const CustomerForm = () => {
                 onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
             />
 
-            <form onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="name">Name:</label>
                     <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
